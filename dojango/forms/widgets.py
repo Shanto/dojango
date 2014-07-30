@@ -8,6 +8,7 @@ from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from django.forms.util import flatatt
 from django.utils import datetime_safe
+from dojango.management.commands.dojobuild import version_tuple
 
 from dojango.util import json_encode
 from dojango.util.config import Config
@@ -269,14 +270,14 @@ class CheckboxInput(DojoWidgetMixin, widgets.CheckboxInput):
     dojo_type = 'dijit.form.CheckBox'
 
 class Select(DojoWidgetMixin, widgets.Select):
-    dojo_type = dojo_config.version < '1.4' and 'dijit.form.FilteringSelect' or 'dijit.form.Select'
-    valid_extra_attrs = dojo_config.version < '1.4' and \
+    dojo_type = version_tuple(dojo_config.version) < version_tuple('1.4') and 'dijit.form.FilteringSelect' or 'dijit.form.Select'
+    valid_extra_attrs = version_tuple(dojo_config.version) < version_tuple('1.4') and \
         ['required', 'help_text',] or \
         ['required',]
 
 class NullBooleanSelect(DojoWidgetMixin, widgets.NullBooleanSelect):
-    dojo_type = dojo_config.version < '1.4' and 'dijit.form.FilteringSelect' or 'dijit.form.Select'
-    valid_extra_attrs = dojo_config.version < '1.4' and \
+    dojo_type = version_tuple(dojo_config.version) < version_tuple('1.4') and 'dijit.form.FilteringSelect' or 'dijit.form.Select'
+    valid_extra_attrs = version_tuple(dojo_config.version) < version_tuple('1.4') and \
         ['required', 'help_text',] or \
         ['required',]
 
@@ -290,7 +291,7 @@ class RadioSelect(DojoWidgetMixin, widgets.RadioSelect):
     dojo_type = 'dijit.form.RadioButton'
 
     def __init__(self, *args, **kwargs):
-        if dojo_config.version < '1.3':
+        if version_tuple(dojo_config.version) < version_tuple('1.3'):
             self.alt_require = 'dijit.form.CheckBox'
         super(RadioSelect, self).__init__(*args, **kwargs)
 
@@ -357,7 +358,7 @@ class HorizontalSliderInput(TextInput):
     }
 
     def __init__(self, attrs=None):
-        if dojo_config.version < '1.3':
+        if version_tuple(dojo_config.version) < version_tuple('1.3'):
             self.alt_require = 'dijit.form.Slider'
         super(HorizontalSliderInput, self).__init__(attrs)
 
@@ -395,7 +396,7 @@ class EmailTextInput(ValidationTextInput):
     js_regex_func = "dojox.validate.regexp.emailAddress"
 
     def __init__(self, attrs=None):
-        if dojo_config.version < '1.3':
+        if version_tuple(dojo_config.version) < version_tuple('1.3'):
             self.js_regex_func = 'dojox.regexp.emailAddress'
         super(EmailTextInput, self).__init__(attrs)
 
@@ -406,7 +407,7 @@ class IPAddressTextInput(ValidationTextInput):
     js_regex_func = "dojox.validate.regexp.ipAddress"
 
     def __init__(self, attrs=None):
-        if dojo_config.version < '1.3':
+        if version_tuple(dojo_config.version) < version_tuple('1.3'):
             self.js_regex_func = 'dojox.regexp.ipAddress'
         super(IPAddressTextInput, self).__init__(attrs)
 
@@ -417,7 +418,7 @@ class URLTextInput(ValidationTextInput):
     js_regex_func = "dojox.validate.regexp.url"
 
     def __init__(self, attrs=None):
-        if dojo_config.version < '1.3':
+        if version_tuple(dojo_config.version) < version_tuple('1.3'):
             self.js_regex_func = 'dojox.regexp.url'
         super(URLTextInput, self).__init__(attrs)
 
